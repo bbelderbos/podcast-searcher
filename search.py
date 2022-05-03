@@ -1,6 +1,7 @@
-import feedparser
 from rich.console import Console
 from rich.table import Table
+
+from cache import PodcastCacher
 
 console = Console()
 
@@ -12,7 +13,7 @@ class PodcastSearcher:
         self.entries = self._load_entries()
 
     def _load_entries(self):
-        return feedparser.parse(self.feed).entries
+        return PodcastCacher(self.feed).entries
 
     def search(self, term):
         term = term.lower()
@@ -29,8 +30,7 @@ class PodcastSearcher:
         table.add_column("Link", style="#00bfff")
 
         for episode in results:
-            table.add_row(episode.title, episode.published,
-                          episode.links[0].href)
+            table.add_row(episode.title, episode.published, episode.link)
 
         console.print(table)
 
