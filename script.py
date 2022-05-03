@@ -3,6 +3,7 @@ from rich.console import Console
 from rich.table import Table
 
 console = Console()
+error_console = Console(stderr=True, style="bold red")
 
 
 class PodcastSearcher:
@@ -24,6 +25,10 @@ class PodcastSearcher:
         return matches
 
     def show_results(self, matches):
+        if not matches:
+            error_console.print(f"No results for {term}")
+            return
+
         table = Table(title=f"Matching {self.podcast} podcast episodes")
 
         table.add_column("Title", style="magenta")
@@ -37,11 +42,11 @@ class PodcastSearcher:
 
 
 if __name__ == "__main__":
-    # podcast = "Pybites"
-    # pb_feed = "https://feeds.buzzsprout.com/1501156.rss"
-    podcast = "Tim Ferriss Show"
-    tf_feed = "https://rss.art19.com/tim-ferriss-show"
-    ps = PodcastSearcher(podcast, tf_feed)
+    podcast = "Pybites"
+    feed = "https://feeds.buzzsprout.com/1501156.rss"
+    # podcast = "Tim Ferriss Show"
+    # feed = "https://rss.art19.com/tim-ferriss-show"
+    ps = PodcastSearcher(podcast, feed)
 
     while True:
         term = input("Enter search term: ")
