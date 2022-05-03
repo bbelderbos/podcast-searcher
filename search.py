@@ -10,10 +10,15 @@ class PodcastSearcher:
 
     def __init__(self, feed):
         self.feed = feed
-        self.entries = self._load_entries()
-
-    def _load_entries(self):
-        return PodcastCacher(self.feed).entries
+        
+    @property
+    def entries(self):
+        try:
+            return self._entries
+        except AttributeError:
+            pass
+        self._entries = PodcastCacher(self.feed).entries
+        return self.entries
 
     def search(self, term):
         term = term.lower()
