@@ -1,7 +1,7 @@
 from rich.console import Console
 from rich.table import Table
 
-from cache import PodcastCacher
+from .cache import PodcastCacher
 
 console = Console()
 
@@ -10,7 +10,7 @@ class PodcastSearcher:
 
     def __init__(self, feed):
         self.feed = feed
-        
+
     @property
     def entries(self):
         try:
