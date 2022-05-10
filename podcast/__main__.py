@@ -1,6 +1,6 @@
 import typer
 
-from search import PodcastSearcher
+from .search import PodcastSearcher
 
 app = typer.Typer()
 

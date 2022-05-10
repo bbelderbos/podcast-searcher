@@ -1,3 +1,4 @@
+import os
 import sqlite3
 from pathlib import Path
 from typing import NamedTuple
@@ -16,10 +17,17 @@ class Entry(NamedTuple):
 
 class PodcastCacher:
 
-    def __init__(self, feed):
+    def __init__(self, feed, refresh=False):
         self.feed = feed
         self.dbname = urlparse(self.feed).netloc + ".db"
+        if refresh:
+            print("Updating cache")
+            try:
+                os.remove(self.dbname)
+            except OSError:
+                pass
         if not Path(self.dbname).exists():
+            print("Creating cache")
             self._cache_entries()
         self.entries = self._retrieve_entries()
 
