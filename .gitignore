@@ -2,3 +2,4 @@ venv
 solution
 **.db
 **.sqlite3
+.env
