@@ -1,0 +1,51 @@
+{% load bootstrap5 %}
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Podcast Searcher Django App</title>
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+</head>
+
+<body>
+
+  <nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand">Home</a>
+      <form class="d-flex" action="/" method="POST">
+        {% csrf_token %}
+        <input class="form-control me-2" name="feed" type="search" value="{{ feed }}"
+          placeholder="Feed" aria-label="Feed">
+        <input class="form-control me-2" name="term" type="search" value="{{ term }}"
+          placeholder="Term" aria-label="Term">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Title</th>
+        <th scope="col">Description</th>
+        <th scope="col">Published</th>
+        <th scope="col">Link</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for entry in entries %}
+        <tr>
+          <th scope="row">{{ entry.title }}</th>
+          <td>{{entry.description|safe}}</td>
+          <td>{{entry.published}}</td>
+          <td>{{entry.link}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</body>
+</html>
