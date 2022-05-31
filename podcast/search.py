@@ -8,8 +8,9 @@ console = Console()
 
 class PodcastSearcher:
 
-    def __init__(self, feed):
+    def __init__(self, feed, cacher=PodcastCacher):
         self.feed = feed
+        self.cacher = cacher
 
     @property
     def entries(self):
@@ -17,7 +18,7 @@ class PodcastSearcher:
             return self._entries
         except AttributeError:
             pass
-        self._entries = PodcastCacher(self.feed).entries
+        self._entries = self.cacher(self.feed).entries
         return self.entries
 
     def search(self, term):

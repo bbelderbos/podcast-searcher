@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 import os
 import sqlite3
 from pathlib import Path
@@ -15,7 +16,14 @@ class Entry(NamedTuple):
     link: str
 
 
-class PodcastCacher:
+class PodcastCacherInterface(ABC):
+    @property
+    @abstractmethod
+    def entries(self):
+        """Podcast entries"""
+
+
+class PodcastCacher(PodcastCacherInterface):
 
     def __init__(self, feed, refresh=False):
         self.feed = feed
@@ -29,7 +37,10 @@ class PodcastCacher:
         if not Path(self.dbname).exists():
             print("Creating cache")
             self._cache_entries()
-        self.entries = self._retrieve_entries()
+
+    @property
+    def entries(self):
+        return self._retrieve_entries()
 
     def _cache_entries(self):
         con = sqlite3.connect(self.dbname)
