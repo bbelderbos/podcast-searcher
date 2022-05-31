@@ -16,5 +16,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         name = options["name"]
         feed = options["feed"]
-        Podcast.objects.create(name=name, url=feed)
+        # could move this into the cacher possibly:
+        podcast, created = Podcast.objects.get_or_create(name=name, url=feed)
+        if not created:
+            raise CommandError("Feed already imported")
         PodcastSearcher(feed, cacher=PodcastOrmCacher).entries
