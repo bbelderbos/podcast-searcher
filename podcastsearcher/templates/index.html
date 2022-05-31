@@ -17,8 +17,13 @@
       <a class="navbar-brand">Home</a>
       <form class="d-flex" action="/" method="POST">
         {% csrf_token %}
-        <input class="form-control me-2" name="feed" type="search" value="{{ feed }}"
-          placeholder="Feed" aria-label="Feed">
+        <select class="form-control me-2" name="feed">
+          {% for podcast in podcasts %}
+            <option value="{{ podcast.url }}"
+              {% if podcast.url == feed %} selected{% endif %}
+            >{{ podcast.name }}</option>
+          {% endfor %}
+        </select>
         <input class="form-control me-2" name="term" type="search" value="{{ term }}"
           placeholder="Term" aria-label="Term">
         <button class="btn btn-outline-success" type="submit">Search</button>
